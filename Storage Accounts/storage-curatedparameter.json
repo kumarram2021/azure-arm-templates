@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountName": {
+            "value": "curatedstorageaccountname"
+        },
+       "location" :{
+            "value": "westus"
+        },
+        "storageSku":{
+            "value": "Standard_GRS"
+        },
+        "minimumTls":{
+            "value": "TLS1_2"
+        },
+        "acTier":{
+            "value": "Hot"
+        },
+        "FileSharesState":{
+            "value":"Disabled"
+        },
+        "ScureTransfer":{
+            "value":true
+        },
+        "AllowBlob":{
+            "value":false
+        },
+        "StorageAccountKeyAccess":{
+            "value":true
+        },
+        "vNetResourceGroup":{
+            "value":"virtualnetworkresourcegroupname"
+        },
+        "vNet":{
+            "value":"virtualnetworknamecur"
+        },
+        "subNet":{
+            "value":"subnetnamecur1"
+        }
+    }
+}
