@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "principalId": {
+            "type": "string",
+            "metadata": {
+                "description": "Principal ID associated with the subscription ID"
+            }
+        },
+        "StorageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Storage Account"
+            }
+        },
+        "builtInRoleType": {
+            "type": "string",
+            "metadata": {
+                "description": "Built In Role Type for the Storage Account"
+            },
+            "allowedValues": [
+                "Storage Blob Data Reader",
+                "Contributor",
+                "Reader",
+                "Storage Blob Data Contributor"
+            ]
+        }
+    },
+    "variables": {
+        "role": {
+            "Storage Blob Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')]",
+            "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+            "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+            "Storage Blob Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]"
+        },
+        "roleAssignmentName": "[guid(resourceId('Microsoft.Storage/storageAccounts', parameters('StorageAccountName')), 
+                                     variables('role')[parameters('builtInRoleType')],
+                                     parameters('principalId'))]"
+    },
+    "resources": [
+        {
+            "scope": "[concat('Microsoft.Storage/storageAccounts/', parameters('StorageAccountName'))]",
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2020-04-01-preview",
+            "name": "[variables('roleAssignmentName')]",
+            "properties": {
+                "roleDefinitionId": "[variables('role')[parameters('builtInRoleType')]]",
+                "principalId": "[parameters('principalId')]"
+            }
+        }
+    ]
+}
